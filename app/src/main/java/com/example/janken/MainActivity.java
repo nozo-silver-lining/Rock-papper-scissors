@@ -11,6 +11,9 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    int opponentHand;
+    int score;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,9 +21,22 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView text = (TextView)findViewById(R.id.text);
         final TextView subtext = (TextView)findViewById(R.id.subtext);
+        final TextView scoreText = (TextView)findViewById(R.id.scoreText);
         Button rock = (Button)findViewById(R.id.rock);
         Button scissors = (Button)findViewById(R.id.scissors);
         Button paper = (Button)findViewById(R.id.paper);
+        Button start = (Button)findViewById(R.id.start);
+
+
+        //opponentHand_start "start"
+       start.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               opponentHand = decideOpponentHand();
+               String opponentHandText = changeTextOpponentHand(opponentHand);
+               text.setText(opponentHandText);
+           }
+       });
 
         //opponentHand 1  "rock"
         //opponentHand 2  "scissors"
@@ -28,27 +44,27 @@ public class MainActivity extends AppCompatActivity {
         rock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int opponentHand = decideOpponentHand();
-                String opponentHandText = changeTextOpponentHand(opponentHand);
                 decideGame(1, opponentHand, subtext);
+                opponentHand = decideOpponentHand();
+                String opponentHandText = changeTextOpponentHand(opponentHand);
                 text.setText(opponentHandText);
             }
         });
         scissors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int opponentHand = decideOpponentHand();
-                String opponentHandText = changeTextOpponentHand(opponentHand);
                 decideGame(2, opponentHand, subtext);
+                opponentHand = decideOpponentHand();
+                String opponentHandText = changeTextOpponentHand(opponentHand);
                 text.setText(opponentHandText);
             }
         });
         paper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int opponentHand = decideOpponentHand();
-                String opponentHandText = changeTextOpponentHand(opponentHand);
                 decideGame(3, opponentHand, subtext);
+                opponentHand = decideOpponentHand();
+                String opponentHandText = changeTextOpponentHand(opponentHand);
                 text.setText(opponentHandText);
             }
         });
@@ -67,9 +83,18 @@ public class MainActivity extends AppCompatActivity {
     }
     void decideGame(int playerHand, int opponentHand, TextView decidetext){
         String decision;
-        if(playerHand == opponentHand) decision = "あいこ";
-        else if((playerHand == 3 && opponentHand ==1) || (playerHand+1 == opponentHand)) decision = "勝ち";
-        else decision = "負け";
+        if(playerHand == opponentHand) {
+            decision = "あいこ";
+            score +=1;
+        }
+        else if((playerHand == 3 && opponentHand ==1) || (playerHand+1 == opponentHand)){
+            decision = "勝ち";
+            score += 2;
+        }
+        else {
+            decision = "負け";
+            score -= 1;
+        }
         decidetext.setText(decision);
     }
 }
